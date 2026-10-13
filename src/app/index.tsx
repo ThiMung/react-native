@@ -1,11 +1,10 @@
 import { View, StyleSheet } from 'react-native';
-import ParentComponent from '@/components/ParentComponent';
-import Bai3 from '@/components/Bai3';
+import ParentControl from '@/components/light/ParentControl';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Bai3/>
+      <ParentControl/>
     </View>
   );
 }

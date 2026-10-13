@@ -11,7 +11,10 @@ import Bai3Child from './Bai3Child';
 
 const Bai3 = () => {
 
-  // Dữ liệu nhập ở Cha
+  // =========================
+  // STATE CỦA CHA
+  // =========================
+
   const [name, setName] = React.useState('');
   const [age, setAge] = React.useState('');
 
@@ -19,46 +22,135 @@ const Bai3 = () => {
   const [nameSubmitted, setNameSubmitted] = React.useState('');
   const [ageSubmitted, setAgeSubmitted] = React.useState('');
 
-  // Đếm số lần Submit từ Cha
+  // Đếm số lần Submit
   const [dem, setDem] = React.useState(0);
 
-  // Cha → Con
+
+  // =========================
+  // KIỂM TRA NAME
+  // =========================
+
+  const handleNameChange = (text: string) => {
+
+    // Chỉ cho phép chữ cái và khoảng trắng
+    if (/^[\p{L}\s]*$/u.test(text)) {
+      setName(text);
+    } else {
+      Alert.alert(
+        'Invalid name',
+        'Name chỉ được nhập chữ cái.'
+      );
+    }
+  };
+
+
+  // =========================
+  // KIỂM TRA AGE
+  // =========================
+
+  const handleAgeChange = (text: string) => {
+
+    // Chỉ cho phép số
+    if (/^[0-9]*$/.test(text)) {
+      setAge(text);
+    } else {
+      Alert.alert(
+        'Invalid age',
+        'Age chỉ được nhập số.'
+      );
+    }
+  };
+
+
+  // =========================
+  // CHA → CON
+  // =========================
+
   const handleProcess = () => {
+
+    if (name.trim() === '') {
+      Alert.alert(
+        'Error',
+        'Vui lòng nhập Name.'
+      );
+      return;
+    }
+
+    if (age.trim() === '') {
+      Alert.alert(
+        'Error',
+        'Vui lòng nhập Age.'
+      );
+      return;
+    }
+
     setNameSubmitted(name);
     setAgeSubmitted(age);
     setDem(dem + 1);
   };
 
-  // Alert ở Cha
+
+  // =========================
+  // ALERT Ở CHA
+  // =========================
+
   const handleAlert = () => {
+
+    if (name.trim() === '' || age.trim() === '') {
+      Alert.alert(
+        'Error',
+        'Vui lòng nhập đầy đủ Name và Age.'
+      );
+      return;
+    }
+
     Alert.alert(
       'Information of Parent',
       `Name: ${name}\nAge: ${age}`
     );
   };
 
-  // Delete ở Cha
+
+  // =========================
+  // DELETE Ở CHA
+  // =========================
+
   const handleDelete = () => {
     setName('');
     setAge('');
   };
 
-  // Con → Cha
-  const handleSendToParent = (nameFromChild: string, ageFromChild: string) => {
+
+  // =========================
+  // CON → CHA
+  // =========================
+
+  const handleSendToParent = (
+    nameFromChild: string,
+    ageFromChild: string
+  ) => {
+
     setName(nameFromChild);
     setAge(ageFromChild);
   };
 
+
   return (
     <View>
+
+      {/* ================= CHA ================= */}
+
       <View style={styles.container}>
-        <Text style={styles.title}>Parent</Text>
+
+        <Text style={styles.title}>
+          Parent
+        </Text>
 
         <TextInput
           placeholder="Enter your name"
           style={styles.input}
           value={name}
-          onChangeText={setName}
+          onChangeText={handleNameChange}
         />
 
         <TextInput
@@ -66,7 +158,7 @@ const Bai3 = () => {
           style={styles.input}
           keyboardType="numeric"
           value={age}
-          onChangeText={setAge}
+          onChangeText={handleAgeChange}
         />
 
         <View style={styles.buttonContainer}>
@@ -76,34 +168,47 @@ const Bai3 = () => {
             style={styles.button}
             onPress={handleAlert}
           >
-            <Text style={styles.buttonText}>Alert</Text>
+            <Text style={styles.buttonText}>
+              Alert
+            </Text>
           </TouchableOpacity>
+
 
           {/* DELETE */}
           <TouchableOpacity
             style={styles.button}
             onPress={handleDelete}
           >
-            <Text style={styles.buttonText}>Delete</Text>
+            <Text style={styles.buttonText}>
+              Delete
+            </Text>
           </TouchableOpacity>
 
-          {/* TRUYỀN CHA → CON */}
+
+          {/* CHA → CON */}
           <TouchableOpacity
             style={styles.button}
             onPress={handleProcess}
           >
-            <Text style={styles.buttonText}>Submit</Text>
+            <Text style={styles.buttonText}>
+              Submit
+            </Text>
           </TouchableOpacity>
 
         </View>
+
       </View>
 
-        <Bai3Child
-          nameProp={nameSubmitted}
-          ageProp={ageSubmitted}
-          demProp={dem}
-          onSendToParent={handleSendToParent}
-        />
+
+      {/* ================= CON ================= */}
+
+      <Bai3Child
+        nameProp={nameSubmitted}
+        ageProp={ageSubmitted}
+        demProp={dem}
+        onSendToParent={handleSendToParent}
+      />
+
     </View>
   );
 };
@@ -112,6 +217,7 @@ export default Bai3;
 
 
 const styles = StyleSheet.create({
+
   container: {
     justifyContent: 'center',
     alignItems: 'center',
